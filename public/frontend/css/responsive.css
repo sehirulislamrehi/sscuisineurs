@@ -1,0 +1,130 @@
+@media (min-width: 320px) and (max-width: 500px) {
+    .banner-logo.garden {
+        width: 300px !important;
+        max-height: 400px!important;
+    }
+    .bottom_logo {
+        width: 25%!important;
+        left: 25px;
+    }
+    .bottom_logo_sygmax {
+        width: 35%!important;
+        right: 25px;
+    }
+    .form-error {
+        margin-bottom: 0;
+        position: unset;
+        z-index: 2;
+    }
+    .banner-carousel .item .row {
+    top: 40%;
+        
+    }
+    .nav_logo img {
+        width: 80px;
+    height: 80px;
+    }
+    .banner-carousel .item .row {
+        left: unset;
+    }
+    .contact-section{
+        margin-top: 0px;
+    }
+    .reservation-button a {
+        border: none;
+        background: #f6bb6b;
+        color: white;
+        padding: 10px 10px;
+    }
+    .powered_by{
+        font-size: 12px;
+    }
+    .reservation-button a {
+    font-size: 11px;
+}
+.popup-video {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    width: 90%;
+    transform: translateY(-50%);
+}
+.popup-video iframe{
+    height: 300px;
+    width: 100%;
+}
+}
+
+@media (min-width: 500px) and (max-width: 768px) {
+    .banner-logo.garden {
+        width: 200px !important;
+    }
+    .nav_logo img {
+        width: 80px;
+        height: 80px;
+    }
+    .bottom_logo {
+        left: 20px;
+    }
+    .bottom_logo_sygmax {
+        right: 20px;
+    }
+    .banner-carousel .item .row {
+        left: unset;
+    }
+    .banner-carousel .item .row {
+        top: 40%;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 990px) {
+    .banner-logo.garden {
+        width: 300px !important;
+    }
+    .bottom_logo {
+        left: 15%;
+    }
+    .bottom_logo_sygmax {
+        right: 15%;
+    }
+    .form-error {
+        margin-bottom: 0;
+        position: unset;
+        z-index: 2;
+    }
+    .banner-carousel .item .row {
+        left: unset;
+    }
+    .banner-carousel .item .row {
+    top: 40%;
+        
+    }
+}
+
+@media (min-width: 990px) and (max-width: 1024px) {
+    .banner-logo.garden {
+        width: 300px !important;
+    }
+    .banner-carousel .item .row {
+        left: unset;
+    }
+    .banner-carousel .item .row {
+    top: 40%;
+        
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1140px) {
+    .banner-logo.garden {
+        width: 300px !important;
+    }
+    
+}
+
+@media screen and (max-width: 1800px) {
+    .banner-logo.garden {
+        width: 400px !important;
+    }
+    
+}
+
