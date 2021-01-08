@@ -49,11 +49,11 @@
                          <div class="col-md-6">
                               <div class="form-group">
                                    <label style="text-align:left;display: block;">Booking Date</label>
-                                   <input type="date" name="booking_date" id="start_date" placeholder="Date" class="form-control" max="2021-03-31" />
+                                   <input type="date" name="booking_date" id="start_date" placeholder="Date" required class="form-control" max="2021-03-31" />
                               </div>
                               <div class="form-group">
                                    <label style="text-align:left;display: block;">Select Time</label>
-                                   <select id="menu_id" name="menu_id" class="form-control">
+                                   <select id="menu_id" name="menu_id" class="form-control" required>
                                         <option>Please Select Your Time</option>
                                         @foreach( App\Models\category::all() as $category )
                                         <option value="{{ $category->id }}" id="menu_price" data-price="{{ $category->price }}">
@@ -64,49 +64,46 @@
                               </div>
                               <div class="form-group">
                                    <label style="text-align:left;display: block;">Number of Adult</label>
-                                   <input type="number" min="1" id="adult" name="adult" placeholder="Example- 1/2" oninput="updatePrice()" class="form-control" />
+                                   <input type="number" min="1" id="adult" name="adult" required placeholder="Example- 1/2" oninput="updatePrice()" class="form-control" />
                               </div>
                               <div class="form-group">
                                    <label style="text-align:left;display: block;">Child if any ( Below 12 years )</label>
-                                   <input type="number" id="child_132" min="0" value="0" name="child_under_132_cm" placeholder="Example- 0/1" oninput="updatePrice()" class="form-control" />
+                                   <input type="number" required id="child_132" min="0" value="0" name="child_under_132_cm" placeholder="Example- 0/1" oninput="updatePrice()" class="form-control" />
                               </div>
                               <div class="form-group">
                                    <label style="text-align:left;display: block;">Child if any ( Below 5 years )</label>
-                                   <input type="number" min="0" value="0" name="child_under_120_cm" id="child_132" placeholder="Example- 0/1" class="form-control" />
-                              </div>
-                              <div class="form-group">
-
+                                   <input type="number" required min="0" value="0" name="child_under_120_cm" id="child_132" placeholder="Example- 0/1" class="form-control" />
                               </div>
                          </div>
 
                          <div class="col-md-6">
                               <div class="form-group">
                                    <label style="text-align:left;display: block;">Name</label>
-                                   <input type="text" name="name" placeholder="Name" class="form-control" />
+                                   <input type="text" required name="name" placeholder="Name" class="form-control" />
                               </div>
                               <div class="form-group">
                                    <label style="text-align:left;display: block;">Phone</label>
-                                   <input type="text" name="phone" placeholder="01*********" class="form-control" />
+                                   <input type="text" required name="phone" placeholder="01*********" class="form-control" />
                               </div>
                               <div class="form-group">
                                    <label style="text-align:left;display: block;">Email ( Please use a valid email address
                                         )</label>
-                                   <input type="email" name="email" class="form-control" placeholder="Email" />
+                                   <input type="email" required name="email" class="form-control" placeholder="Email" />
                               </div>
                               <div class="form-group">
                                    <label style="text-align:left;display: block;">City</label>
-                                   <input type="text" name="city" placeholder="City" class="form-control" />
+                                   <input type="text" required name="city" placeholder="City" class="form-control" />
                               </div>
                               <div class="form-group">
                                    <label style="text-align:left;display: block;">Country</label>
-                                   <select name="country" class="form-control">
+                                   <select name="country" required class="form-control">
                                         <option value="Bangladesh">Bangladesh</option>
                                    </select>
                               </div>
                          </div>
                          <div class="col-md-12">
                               <label style="text-align:left;display: block;">Address</label>
-                              <textarea class="form-control" placeholder="Address" name="address" rows="3"></textarea>
+                              <textarea class="form-control" required placeholder="Address" name="address" rows="3"></textarea>
                          </div>
 
                          <div class="col-md-12">
@@ -118,7 +115,7 @@
                               <p>payment method</p>
                               <div class="form-check">
                                    <div>
-                                        <input class="form-check-input" type="radio" checked name="payment_method" id="on_spot_payment" value="0">
+                                        <input class="form-check-input" required type="radio" checked name="payment_method" id="on_spot_payment" value="0">
                                         <label class="form-check-label" for="on_spot_payment">
                                              On Spot Payment
                                         </label>
