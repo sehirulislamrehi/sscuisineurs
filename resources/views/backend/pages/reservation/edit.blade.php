@@ -185,6 +185,16 @@
                                     </div>
                                     <!-- custom discount end -->
 
+                                    <!-- mtb discount start -->
+                                    <div class="form-group">
+                                        <label>Apply Bogo For MTB</label>
+                                        <input type="text" value="" name="mtb_card"
+                                            class="form-control card_number_mtb" placeholder="Card Number">
+                                        <button type="button" data-method="GET" style="margin-top: 15px"
+                                            class="check_bogo_mtb">Apply</button>
+                                    </div>
+                                    <!-- mtb discount end -->
+
                                     <div class="form-group">
                                         <label>Payment status *</label>
                                         <select name='payment_status' class="form-control">

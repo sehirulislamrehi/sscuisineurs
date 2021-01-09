@@ -75,6 +75,7 @@
                                                     <option value="AmEx"  >AmEx Card</option>
                                                     <option value="EBL" >EBL Card</option>
                                                     <option value="BracBank" >Brac Bank</option>
+                                                    <option value="MTB" >MTB</option>
                                                 </select>                         
                                             </div>                                      
                                         </div>  
@@ -181,6 +182,11 @@
                                                                         selected 
                                                                         @endif
                                                                         >Brac Bank</option>
+                                                                        <option value="MTB" 
+                                                                        @if( $discount->type == 'MTB' ) 
+                                                                        selected 
+                                                                        @endif
+                                                                        >MTB</option>
                                                                     </select>                         
                                                                 </div>                                      
                                                             </div>  

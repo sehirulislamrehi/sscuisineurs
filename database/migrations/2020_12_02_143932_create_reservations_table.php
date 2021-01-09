@@ -29,7 +29,7 @@ class CreateReservationsTable extends Migration
             $table->text('country');
             $table->longText('message')->nullable();
             $table->string('random')->unique();
-            $table->enum('discount_type',['GPStar','CityGem','AmEx','EBL','Brac','Authority'])->nullable();
+            $table->enum('discount_type',['GPStar','CityGem','AmEx','EBL','Brac','Authority','MTB'])->nullable();
             $table->integer('discount_percent')->nullable();
             $table->boolean('payment_method');
             $table->enum('payment_type',['Card','Cash'])->nullable();

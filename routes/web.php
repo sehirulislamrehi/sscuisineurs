@@ -81,10 +81,14 @@ Route::post('/city_gem/discount/{code}/{amount}', [reservationController::class,
 Route::post('/brac_bank/bogo/{card}/{amount}/{menu}/{date}', [reservationController::class, 'brac_bank'])->name('brac_bank.bogo');
 Route::post('/ebl/bogo/{card}/{amount}/{menu}/{date}', [reservationController::class, 'ebl'])->name('ebl.bogo');
 
+
 //check bogo backend
 Route::get('/validate/bogo/{card}', [reservationController::class, 'validate_bogo'])->name('validate.bogo');
+
+//apply bogo backend
 Route::get('/validate/ebl/{card}/bogo/{menu_price}/{total_amount}/{date}', [reservationController::class, 'validate_bogo_ebl'])->name('validate.bogo.ebl');
 Route::get('/validate/brac/{card}/bogo/{menu_price}/{total_amount}/{date}', [reservationController::class, 'validate_bogo_brac'])->name('validate.bogo.brac');
+Route::get('/validate/mtb/{card}/bogo/{menu_price}/{total_amount}/{date}', [reservationController::class, 'validate_bogo_mtb'])->name('validate.bogo.mtb');
 Route::get('/validate/{card_number}/amex/{menu_price}/card/{total_amount}/date/{date}', [reservationController::class, 'validate_amex_bogo'])->name('validate.bogo.amex');
 
 Auth::routes();

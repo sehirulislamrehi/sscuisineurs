@@ -103,12 +103,14 @@ $(document).ready(function(){
 
 		$(".check_bogo ~").remove();
 		$(".check_bogo_brac ~").remove();
+		$(".check_bogo_mtb ~").remove();
 		$("#check_bogo_amex ~").remove();
 		$("#apply_custom_discount ~").remove();
 		
 		$(".card_number").val('');
 		$("#amex_card").val('');
 		$(".card_number_brac").val('');
+		$(".card_number_mtb").val('');
 		$(".custom_discount").val('');
 
 		if(card_number.length >= 16 ){
@@ -156,11 +158,13 @@ $(document).ready(function(){
 
 		$("#amex_card").val('');
 		$(".card_number_brac").val('');
+		$(".card_number_mtb").val('');
 		$(".validate_card").val('');
 		$(".custom_discount").val('');
 
 		$(".validate_bogo ~").remove();
 		$(".check_bogo_brac ~").remove();
+		$(".check_bogo_mtb ~").remove();
 		$("#check_bogo_amex ~").remove();
 		$("#apply_custom_discount ~").remove();
 
@@ -211,11 +215,13 @@ $(document).ready(function(){
 
 		$("#amex_card").val('');
 		$(".card_number").val('');
+		$(".card_number_mtb").val('');
 		$(".validate_card").val('');
 		$(".custom_discount").val('');
 
 		$(".validate_bogo ~").remove();
 		$(".check_bogo ~").remove();
+		$(".check_bogo_mtb ~").remove();
 		$("#check_bogo_amex ~").remove();
 		$("#apply_custom_discount ~").remove();
 
@@ -255,6 +261,64 @@ $(document).ready(function(){
 	})
 
 
+	//MTB bank
+	$(".check_bogo_mtb").click(function(e){
+		let $this = $(this);
+		let card_number = e.target.previousElementSibling.value;
+		
+
+		let total_amount = $("#total_amount").val();
+		let menu_price = $("#menu_price").val();
+		let date = $("#reservation_date").val();
+
+		$("#amex_card").val('');
+		$(".card_number").val('');
+		$(".card_number_brac").val('');
+		$(".validate_card").val('');
+		$(".custom_discount").val('');
+
+		$(".validate_bogo ~").remove();
+		$(".check_bogo ~").remove();
+		$("#check_bogo_amex ~").remove();
+		$(".check_bogo_brac ~").remove();
+		$("#apply_custom_discount ~").remove();
+
+		if(card_number.length >= 16){
+			$.ajax({
+				type:  $this.attr('method'),
+				url: '/validate/mtb/'+ card_number+ '/bogo/'+menu_price+'/'+total_amount+'/'+date,
+				data: card_number,
+				contentType: false,
+				processData: false,
+				cache: false,
+				success: function(response){
+					if( response.validation_success ){
+						$(".check_bogo_mtb ~ .bogo-success").remove();
+						$(".check_bogo_mtb ~ .bogo-failed").remove();
+						$(".check_bogo_mtb").parent().append('<p class="bogo-success mb-0"> He has got bogo offer from MTB Bank. Grand Total After Discount is '+ response.validation_success +' BDT</p>')
+						$("#discount_price").val(response.validation_success);
+					}else if( response.validation_failed ){
+						$(".check_bogo_mtb ~ .bogo-success").remove();
+						$(".check_bogo_mtb ~ .bogo-failed").remove();
+						$(".check_bogo_mtb").parent().append('<p class="bogo-failed mb-0">'+ response.validation_failed +'</p>')
+						$("#discount_price").val(0);
+					}                
+				},
+				error: function(response){
+					
+				}
+			})
+		}
+		else{
+			$(".check_bocheck_bogo_mtbgo_brac ~ .bogo-success").remove();
+			$(".check_bogo_mtb ~ .bogo-failed").remove();
+			$(".check_bogo_mtb").parent().append('<p class="bogo-failed mb-0">invalid Card Number</p>')
+			$("#discount_price").val(0);
+		}
+		
+	})
+
+
 	//amex check
 	$("#check_bogo_amex").click(function(e){
 		let $this = $(this);
@@ -265,11 +329,13 @@ $(document).ready(function(){
 
 		$(".card_number").val('');
 		$(".card_number_brac").val('');
+		$(".card_number_mtb").val('');
 		$(".validate_card").val('');
 		$(".custom_discount").val('');
 
 		$(".validate_bogo ~").remove();
 		$(".check_bogo ~").remove();
+		$(".check_bogo_mtb ~").remove();
 		$(".check_bogo_brac ~").remove();
 		$("#apply_custom_discount ~").remove();
 
@@ -318,12 +384,14 @@ $(document).ready(function(){
 
 		$(".card_number").val('');
 		$(".card_number_brac").val('');
+		$(".card_number_mtb").val('');
 		$(".validate_card").val('');
 		$("#amex_card").val('');
 
 		$(".validate_bogo ~").remove();
 		$(".check_bogo ~").remove();
 		$(".check_bogo_brac ~").remove();
+		$(".check_bogo_mtb ~").remove();
 		$("#check_bogo_amex ~").remove();
 
 		if( discount_percent > 100 ){

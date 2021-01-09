@@ -83,6 +83,7 @@
                                                         <option value="Brac">Brac Bank</option>
                                                         <option value="GPStar">GPStar</option>
                                                         <option value="Authority">Authority</option>
+                                                        <option value="MTB">MTB</option>
                                                         <option value="">No Discount</option>
                                                     </select>
                                                 </div>

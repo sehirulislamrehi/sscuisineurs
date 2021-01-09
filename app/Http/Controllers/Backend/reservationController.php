@@ -285,6 +285,30 @@ class reservationController extends Controller
     }
 
 
+    public function validate_bogo_mtb($card_number, $menu_price, $total_amount, $date)
+    {
+        
+        $bogos = Bogo::whereDate('reservation_date', $date)->get();
+        foreach ($bogos as $bogo) {
+            if ($bogo->card_number == $card_number) {
+                return response()->json(['validation_failed' => 'You get bogo offer in your selected date at once. Please choose another date to get bogo offer. Thanks.'], 200);
+            }
+        }
+
+        $ebl_validate = Discount::orWhere('type', 'MTB')->get();
+        foreach ($ebl_validate as $single_validation) {
+            
+            if (substr($card_number, 0, 6) ==  $single_validation->code) {
+                $total_amount -= $menu_price;
+                return response()->json(['validation_success' => $total_amount], 200);
+            }
+        }
+        return response()->json(['validation_failed' => 'This person is not applicable for bogo'], 200);
+    }
+
+
+
+
     public function validate_amex_bogo($card_number, $menu_price, $total_amount,$date)
     {
         $bogos = Bogo::whereDate('reservation_date', $date)->get();
@@ -401,9 +425,8 @@ class reservationController extends Controller
             $transaction->is_payment_done = false;
 
             if ($transaction->save()) :
-                
-                // Mail::to('info@sscuisineurs.com')->send(new ReservationMail($reservation, 'New Reservation'));
-                // Mail::to($reservation->email)->send(new ReservationMail($reservation, 'Reservation Success'));
+                Mail::to('info@sscuisineurs.com')->send(new ReservationMail($reservation, 'New Reservation'));
+                Mail::to($reservation->email)->send(new ReservationMail($reservation, 'Reservation Success'));
                 $code = $transaction->reservation->random;
                 $request->session()->flash('code',$code);
                 return redirect()->route('reservation.make.page');
@@ -783,6 +806,15 @@ class reservationController extends Controller
                     $reservation->bookingTransation->save();
                     $reservation->discount_type = 'Brac';
                     $reservation->discount_percent = $request->custom_discount;
+                } else if ($request->mtb_card != NULL) {
+                    $bogo->card_number = $request->mtb_card;
+                    $bogo->reservation_id = $request->reservation_id;
+                    $bogo->reservation_date = $request->reservation_date;
+                    $bogo->save();
+                    $reservation->bookingTransation->discounted_amount = $request->discount_price;
+                    $reservation->bookingTransation->save();
+                    $reservation->discount_type = 'MTB';
+                    $reservation->discount_percent = $request->custom_discount;
                 } else if ($request->amex_card_number != NULL) {
                     $bogo->card_number = $request->amex_card_number;
                     $bogo->reservation_id = $request->reservation_id;
@@ -798,6 +830,7 @@ class reservationController extends Controller
                     $reservation->discount_type = 'Authority';
                     $reservation->discount_percent = $request->custom_discount;
                 }
+                
             }
 
             $reservation->save();
