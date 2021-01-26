@@ -33,6 +33,10 @@ $(document).ready(function(){
                 $(".reservation_failed").hide();
                 $(".holiday").html('')
 
+                if( response.we_are_full ){
+                    swal("","We are full now.","warning");
+                }
+
                 if( response[0] == 'failed' ){
                     $(".holiday").show();
                     $(".holiday").append(`${response[1]}`);
@@ -45,13 +49,9 @@ $(document).ready(function(){
                     $(".reservation_info .block").append(`
                     <div class="block">
                         <h2 class="text-center">Thanks for your reservation</h2>
-                        <p style="color: #000000; text-align:center; margin: 0; font-size: 18px" >Grand Total : ${response.booking_transation.amount} BDT</p>
+                        <p style="color: #000000; text-align:center; margin: 0; font-size: 18px" >GPSTAR Platinum and Platinum Plus receive 20% discount
+BoGo available for selective cards of BBL, EBL, City Bank AmEx and MTB</p>
                         
-                        <p style="color: #000000; text-align:center; margin: 0; font-size: 18px" >Grand Total After Discount : ${response.booking_transation.discounted_amount ? response.booking_transation.discounted_amount : 'You Have No Discount in' } BDT</p>
-
-                        <p style="color: #000000; text-align:center; margin: 0; font-size: 18px" > Discount From : 
-                        ${response.discount_type  ? ( response.discount_type == 'Brac' ? 'Brac Bank' : response.discount_type ) : 'N/A'}
-                        </p>
                         <p style="color: #000000; text-align:center; margin: 0; font-size: 18px" >Code Number ( Please remember this code number when arrive ) : ${response.random}</p>
                         <p style="color: #000000; text-align:center; margin: 0; font-size: 18px" >We also mail you in your given email address. Please check it.</p>
                         <h2 class="text-center">Please Take A ScreenShot Of This Page And Remember The Code Number!</h2>
@@ -64,7 +64,7 @@ $(document).ready(function(){
                 }
                 else{
                     let redirectURl = JSON.parse(response).GatewayPageURL
-                    console.log(redirectURl)
+                    
                     return window.location.href = redirectURl
                 }
 
@@ -578,4 +578,4 @@ document.onkeydown = function(e) {
         return false;
     }
 }
-document.addEventListener('contextmenu', e => e.preventDefault())
+// document.addEventListener('contextmenu', e => e.preventDefault())

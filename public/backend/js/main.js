@@ -106,7 +106,10 @@ $(document).ready(function(){
 		$(".check_bogo_mtb ~").remove();
 		$("#check_bogo_amex ~").remove();
 		$("#apply_custom_discount ~").remove();
-		
+		$(".card_number_city").val('');
+
+
+		$(".apply_city_gem ~").remove();
 		$(".card_number").val('');
 		$("#amex_card").val('');
 		$(".card_number_brac").val('');
@@ -161,7 +164,10 @@ $(document).ready(function(){
 		$(".card_number_mtb").val('');
 		$(".validate_card").val('');
 		$(".custom_discount").val('');
+		$(".card_number_city").val('');
 
+
+		$(".apply_city_gem ~").remove()
 		$(".validate_bogo ~").remove();
 		$(".check_bogo_brac ~").remove();
 		$(".check_bogo_mtb ~").remove();
@@ -218,12 +224,16 @@ $(document).ready(function(){
 		$(".card_number_mtb").val('');
 		$(".validate_card").val('');
 		$(".custom_discount").val('');
+		$(".card_number_city").val('');
+
 
 		$(".validate_bogo ~").remove();
 		$(".check_bogo ~").remove();
 		$(".check_bogo_mtb ~").remove();
 		$("#check_bogo_amex ~").remove();
 		$("#apply_custom_discount ~").remove();
+		$(".apply_city_gem ~").remove();
+
 
 		if(card_number.length >= 16){
 			$.ajax({
@@ -276,12 +286,14 @@ $(document).ready(function(){
 		$(".card_number_brac").val('');
 		$(".validate_card").val('');
 		$(".custom_discount").val('');
+		$(".card_number_city").val('');
 
 		$(".validate_bogo ~").remove();
 		$(".check_bogo ~").remove();
 		$("#check_bogo_amex ~").remove();
 		$(".check_bogo_brac ~").remove();
 		$("#apply_custom_discount ~").remove();
+		$(".apply_city_gem ~").remove();
 
 		if(card_number.length >= 16){
 			$.ajax({
@@ -313,6 +325,60 @@ $(document).ready(function(){
 			$(".check_bocheck_bogo_mtbgo_brac ~ .bogo-success").remove();
 			$(".check_bogo_mtb ~ .bogo-failed").remove();
 			$(".check_bogo_mtb").parent().append('<p class="bogo-failed mb-0">invalid Card Number</p>')
+			$("#discount_price").val(0);
+		}
+		
+	})
+
+	//city gem
+	$(".apply_city_gem").click(function(e){
+		let $this = $(this);
+		let code_number = e.target.previousElementSibling.value;
+		
+		let total_amount = $("#total_amount").val();
+		let menu_price = $("#menu_price").val();
+
+		$("#amex_card").val('');
+		$(".card_number").val('');
+		$(".card_number_brac").val('');
+		$(".validate_card").val('');
+		$(".custom_discount").val('');
+
+		$(".validate_bogo ~").remove();
+		$(".check_bogo ~").remove();
+		$("#check_bogo_amex ~").remove();
+		$(".check_bogo_brac ~").remove();
+		$("#apply_custom_discount ~").remove();
+
+		if(code_number.length == 7){
+			$.ajax({
+				type:  $this.attr('method'),
+				url: '/discount/'+ total_amount +'/citygem/'+code_number,
+				contentType: false,
+				processData: false,
+				cache: false,
+				success: function(response){
+					if( response.validation_success ){
+						$(".apply_city_gem ~ .bogo-success").remove();
+						$(".apply_city_gem ~ .bogo-failed").remove();
+						$(".apply_city_gem").parent().append('<p class="bogo-success mb-0"> He has got 15% discount from CITYGEM. Grand Total After Discount is '+ response.validation_success +' BDT</p>')
+						$("#discount_price").val(response.validation_success);
+					}else if( response.validation_failed ){
+						$(".apply_city_gem ~ .bogo-success").remove();
+						$(".apply_city_gem ~ .bogo-failed").remove();
+						$(".apply_city_gem").parent().append('<p class="bogo-failed mb-0">'+ response.validation_failed +'</p>')
+						$("#discount_price").val(0);
+					}                
+				},
+				error: function(response){
+					
+				}
+			})
+		}
+		else{
+			$(".apply_city_gem ~ .bogo-success").remove();
+			$(".apply_city_gem ~ .bogo-failed").remove();
+			$(".apply_city_gem").parent().append('<p class="bogo-failed mb-0">invalid Card Number</p>')
 			$("#discount_price").val(0);
 		}
 		

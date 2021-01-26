@@ -16,7 +16,7 @@ class DiscountController extends Controller
 
     public function add(Request $request){
         $request->validate([
-            'code' => 'required|unique:discounts,code',
+            'code' => 'required',
             'type' => 'required',
         ]);
 
@@ -34,7 +34,7 @@ class DiscountController extends Controller
     public function update(Request $request, $id){
 
         $request->validate([
-            'code' => 'required|unique:discounts,code,'.$id,
+            'code' => 'required',
             'type' => 'required',
         ]);
 

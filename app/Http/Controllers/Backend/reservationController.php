@@ -307,6 +307,19 @@ class reservationController extends Controller
     }
 
 
+    //apply bogo city gem from backend
+    public function apply_city_gem($amount, $code){
+        $code_number = Discount::where('type','CityGem')->first();
+
+        if( $code_number->code == $code ){
+            $discount_amount = (15 / 100) * $amount;
+            $total_amount = $amount - floor($discount_amount);
+            return response()->json(['validation_success' => $total_amount], 200);
+        }else{
+            return response()->json(['validation_failed' => 'Wrong code number'], 200);
+        }
+    }
+
 
 
     public function validate_amex_bogo($card_number, $menu_price, $total_amount,$date)
@@ -327,8 +340,11 @@ class reservationController extends Controller
     {
         $holidays = Holiday::all();
         if ($booking_date == '2020-12-15' || $booking_date == '2021-02-21' || $booking_date == '2021-03-07') {
+            
             foreach ($holidays as $holiday) {
+               
                 if ($holiday->date == '2020-12-15' || $holiday->date == '2021-02-21' || $holiday->date == '2021-03-07') {
+                   
                     $day = Day::where('day', 'Saturday')->first();
                     return  $day->category()->get();
                 }
@@ -336,8 +352,14 @@ class reservationController extends Controller
         }
         foreach ($holidays as $holiday) {
             if ($holiday->date == $booking_date) {
-                $day = Day::where('day', 'Saturday')->first();
+                if( $holiday->date == '2021-02-14' ){
+                    $day = Day::where('day', 'Monday')->first();
+                    return  $day->category()->get();
+                }else{
+                    $day = Day::where('day', 'Saturday')->first();
                 return  $day->category()->get();
+                }
+                
             }
         }
 
@@ -352,6 +374,7 @@ class reservationController extends Controller
     }
 
     public function make_reservation(Request $request){
+        
         $message = [
             'payment_method.required' => 'Please select a payment method',
             'name.required' => 'Please enter your name',
@@ -391,7 +414,9 @@ class reservationController extends Controller
         ], $message);
 
         //choose category
-       $category = category::where('id', $request->menu_id)->first();
+        $category = category::where('id', $request->menu_id)->first();
+
+        
 
         $reservation = new reservation();
         $reservation->name = $request->name;
@@ -509,56 +534,75 @@ class reservationController extends Controller
         //choose category
         $category = category::where('id', $request->menu_id)->first();
 
-        $reservation = new reservation();
-        $reservation->name = $request->name;
-        $reservation->email = $request->email;
-        $reservation->phone = $request->phone;
-        $reservation->booking_date = $request->booking_date;
-        $reservation->category_id = $request->menu_id;
-        $reservation->category_price = $category->price;
-        $reservation->adult = $request->adult;
-        $reservation->child_under_120_cm = $request->child_under_120_cm;
-        $reservation->child_under_132_cm = $request->child_under_132_cm;
-        $reservation->city = $request->city;
-        $reservation->country = $request->country;
-        $reservation->address = $request->address;
-        $reservation->message = $request->message;
-        $reservation->random = rand(10000, 9999999);
+        $existing_reservation = reservation::where('category_id', $request->menu_id)->where('booking_date',$request->booking_date)->where('is_delete', false)->get();
 
-        //total amount calculation
-        $price_for_adult = $category->price;
-        $price_for_132 =  floor($category->price / 2);
-        $totalAmount = ($request->adult * $price_for_adult) + ($request->child_under_132_cm * $price_for_132);
-        $discount_amount = $request->discount_amount;
-        $reservation->payment_method = $request->payment_method;
+        $sum = 0;
+        $sum = $existing_reservation->sum('adult') + $existing_reservation->sum('child_under_120_cm') + $existing_reservation->sum('child_under_132_cm') ;
+        
+        if( $sum < 250 ){
+            $check_people = 250 - $sum;
+            $want_to_reserve = $request->adult + $request->child_under_120_cm + $request->child_under_132_cm;
 
-        $reservation->save();
-        if ($request->discount_amount == 0) {
-            $reservation->discount_type = NULL;
-        } else {
-            $reservation->discount_type = $request->discount;
-            $bogo = new Bogo();
-            if ($request->brac_bank_card != NULL || $request->ebl_card != NULL) {
-                if ($request->brac_bank_card != NULL) {
-                    $bogo->card_number = $request->brac_bank_card;
-                    $bogo->reservation_id = $reservation->id;
-                    $bogo->reservation_date = $reservation->booking_date;
-                } else if ($request->ebl_card != NULL) {
-                    $bogo->card_number = $request->ebl_card;
-                    $bogo->reservation_id = $reservation->id;
-                    $bogo->reservation_date = $reservation->booking_date;
+            if( $check_people > $want_to_reserve ){
+                $reservation = new reservation();
+                $reservation->name = $request->name;
+                $reservation->email = $request->email;
+                $reservation->phone = $request->phone;
+                $reservation->booking_date = $request->booking_date;
+                $reservation->category_id = $request->menu_id;
+                $reservation->category_price = $category->price;
+                $reservation->adult = $request->adult;
+                $reservation->child_under_120_cm = $request->child_under_120_cm;
+                $reservation->child_under_132_cm = $request->child_under_132_cm;
+                $reservation->city = $request->city;
+                $reservation->country = $request->country;
+                $reservation->address = $request->address;
+                $reservation->message = $request->message;
+                $reservation->random = rand(10000, 9999999);
+
+                //total amount calculation
+                $price_for_adult = $category->price;
+                $price_for_132 =  floor($category->price / 2);
+                $totalAmount = ($request->adult * $price_for_adult) + ($request->child_under_132_cm * $price_for_132);
+                $discount_amount = $request->discount_amount;
+                $reservation->payment_method = $request->payment_method;
+
+                $reservation->save();
+                if ($request->discount_amount == 0) {
+                    $reservation->discount_type = NULL;
+                } else {
+                    $reservation->discount_type = $request->discount;
+                    $bogo = new Bogo();
+                    if ($request->brac_bank_card != NULL || $request->ebl_card != NULL) {
+                        if ($request->brac_bank_card != NULL) {
+                            $bogo->card_number = $request->brac_bank_card;
+                            $bogo->reservation_id = $reservation->id;
+                            $bogo->reservation_date = $reservation->booking_date;
+                        } else if ($request->ebl_card != NULL) {
+                            $bogo->card_number = $request->ebl_card;
+                            $bogo->reservation_id = $reservation->id;
+                            $bogo->reservation_date = $reservation->booking_date;
+                        }
+                        $bogo->save();
+                    }
                 }
-                $bogo->save();
+
+                if ($reservation->save()) :
+                    if ($request->payment_method == 0) :
+                        return $this->onSpotPayment($reservation, $totalAmount, $discount_amount);
+                    else :
+                        return $this->SSLCommerz($reservation, $totalAmount, $discount_amount);
+                    endif;
+                endif;
+            }else{
+                return response()->json(['we_are_full' => 'We are full now'], 200);
             }
+        }else{
+            return response()->json(['we_are_full' => 'We are full now'], 200);
         }
 
-        if ($reservation->save()) :
-            if ($request->payment_method == 0) :
-                return $this->onSpotPayment($reservation, $totalAmount, $discount_amount);
-            else :
-                return $this->SSLCommerz($reservation, $totalAmount, $discount_amount);
-            endif;
-        endif;
+
+        
     }
 
     public function onSpotPayment($reservation, $totalAmount, $discount_amount)
@@ -829,6 +873,11 @@ class reservationController extends Controller
                     $reservation->bookingTransation->save();
                     $reservation->discount_type = 'Authority';
                     $reservation->discount_percent = $request->custom_discount;
+                }
+                else if ($request->city_gem != NULL) {
+                    $reservation->bookingTransation->discounted_amount = $request->discount_price;
+                    $reservation->bookingTransation->save();
+                    $reservation->discount_type = 'CityGem';
                 }
                 
             }

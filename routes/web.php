@@ -91,6 +91,10 @@ Route::get('/validate/brac/{card}/bogo/{menu_price}/{total_amount}/{date}', [res
 Route::get('/validate/mtb/{card}/bogo/{menu_price}/{total_amount}/{date}', [reservationController::class, 'validate_bogo_mtb'])->name('validate.bogo.mtb');
 Route::get('/validate/{card_number}/amex/{menu_price}/card/{total_amount}/date/{date}', [reservationController::class, 'validate_amex_bogo'])->name('validate.bogo.amex');
 
+//apply bogo city gem
+Route::get('/discount/{total}/citygem/{code_number}', [reservationController::class, 'apply_city_gem']);
+
+
 Auth::routes();
 
 Route::get('/register', function(){

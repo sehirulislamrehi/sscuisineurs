@@ -82,6 +82,7 @@
                                                         <option value="EBL">EBL</option>
                                                         <option value="Brac">Brac Bank</option>
                                                         <option value="GPStar">GPStar</option>
+                                                        <option value="CityGem">CityGem</option>
                                                         <option value="Authority">Authority</option>
                                                         <option value="MTB">MTB</option>
                                                         <option value="">No Discount</option>

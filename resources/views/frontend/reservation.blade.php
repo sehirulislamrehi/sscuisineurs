@@ -272,15 +272,14 @@
                                         <!-- city gem start start -->
                                         <div class="col-md-6">
                                             <div class="city_gem all_card">
-                                                <input class="form-check-input" disabled type="radio" name="discount" id="city_gem"
+                                                <input class="form-check-input" type="radio" name="discount" id="city_gem"
                                                     value="CityGem">
                                                 <label class="form-check-label" for="city_gem">
-                                                    Citygem get 15% Discount  ( Coming Soon )<img src="{{ asset('frontend/images/city_gem.jpg') }}"
+                                                    Citygem get 15% Discount <img src="{{ asset('frontend/images/city_gem.jpg') }}"
                                                         width="40px" alt="">
                                                 </label>
             
                                                 <div class="get_code" id="get_code_city_gem">
-                                                    <p style="margin: 15px 0">Dial *345# to get code</p>
                                                     <div class="form-group">
                                                         <input type="text" class="form-control" id="city_code" name="gem_code"
                                                             placeholder="Please Enter Your Code">

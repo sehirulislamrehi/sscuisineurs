@@ -195,6 +195,16 @@
                                     </div>
                                     <!-- mtb discount end -->
 
+                                    <!-- city gem discount start -->
+                                    <div class="form-group">
+                                        <label>Apply City gem discount</label>
+                                        <input type="text" value="" name="city_gem"
+                                            class="form-control card_number_city" placeholder="Code Number">
+                                        <button type="button" data-method="GET" style="margin-top: 15px"
+                                            class="apply_city_gem">Apply</button>
+                                    </div>
+                                    <!-- city gem discount end -->
+
                                     <div class="form-group">
                                         <label>Payment status *</label>
                                         <select name='payment_status' class="form-control">
